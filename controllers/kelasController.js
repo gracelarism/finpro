@@ -1,56 +1,80 @@
-let kelasMusik = require("../data/kelasData");
+import kelasMusik from "../data/kelasData.js";
 
-exports.getKelas = (req, res) => {
-    const { minHarga, maxHarga } = req.query;
-    let result = kelasMusik;
+// GET ALL
+export const getKelas = (req, res) => {
+  const { minHarga, maxHarga } = req.query;
+  let result = kelasMusik;
 
-    if (minHarga) result = result.filter(k => k.hargaPerPertemuan >= Number(minHarga));
-    if (maxHarga) result = result.filter(k => k.hargaPerPertemuan <= Number(maxHarga));
+  if (minHarga) {
+    result = result.filter(k => k.hargaPerPertemuan >= Number(minHarga));
+  }
 
-    res.json({ message: "Daftar Kelas Musik", data: result });
+  if (maxHarga) {
+    result = result.filter(k => k.hargaPerPertemuan <= Number(maxHarga));
+  }
+
+  res.json({
+    message: "Daftar Kelas Musik",
+    data: result
+  });
 };
 
-exports.getKelasById = (req, res) => {
-    const id = Number(req.params.id);
-    const kelas = kelasMusik.find(k => k.id === id);
+// GET BY ID
+export const getKelasById = (req, res) => {
+  const id = Number(req.params.id);
+  const kelas = kelasMusik.find(k => k.id === id);
 
-    if (!kelas) return res.status(404).json({ message: "Kelas tidak ditemukan" });
+  if (!kelas) {
+    return res.status(404).json({ message: "Kelas tidak ditemukan" });
+  }
 
-    res.json({ message: "Detail kelas", data: kelas });
+  res.json({
+    message: "Detail kelas",
+    data: kelas
+  });
 };
 
-exports.createKelas = (req, res) => {
-    const newData = req.body;
+// CREATE
+export const createKelas = (req, res) => {
+  const newData = req.body;
 
-    if (!newData.namaKelas) {
-        return res.status(400).json({ message: "namaKelas wajib diisi" });
-    }
+  if (!newData.namaKelas) {
+    return res.status(400).json({ message: "namaKelas wajib diisi" });
+  }
 
-    newData.id = kelasMusik.length + 1;
-    kelasMusik.push(newData);
+  newData.id = kelasMusik.length + 1;
+  kelasMusik.push(newData);
 
-    res.status(201).json({
-        message: "Kelas ditambahkan",
-        data: newData
-    });
+  res.status(201).json({
+    message: "Kelas ditambahkan",
+    data: newData
+  });
 };
 
-exports.updateKelas = (req, res) => {
-    const id = Number(req.params.id);
-    const index = kelasMusik.findIndex(k => k.id === id);
+// UPDATE
+export const updateKelas = (req, res) => {
+  const id = Number(req.params.id);
+  const index = kelasMusik.findIndex(k => k.id === id);
 
-    if (index === -1) {
-        return res.status(404).json({ message: "Kelas tidak ditemukan" });
-    }
+  if (index === -1) {
+    return res.status(404).json({ message: "Kelas tidak ditemukan" });
+  }
 
-    kelasMusik[index] = { ...kelasMusik[index], ...req.body };
+  kelasMusik[index] = { ...kelasMusik[index], ...req.body };
 
-    res.json({ message: "Kelas diperbarui", data: kelasMusik[index] });
+  res.json({
+    message: "Kelas diperbarui",
+    data: kelasMusik[index]
+  });
 };
 
-exports.deleteKelas = (req, res) => {
-    const id = Number(req.params.id);
-    kelasMusik = kelasMusik.filter(k => k.id !== id);
+// DELETE
+export const deleteKelas = (req, res) => {
+  const id = Number(req.params.id);
+  const newList = kelasMusik.filter(k => k.id !== id);
 
-    res.json({ message: "Kelas dihapus" });
+  kelasMusik.length = 0;
+  kelasMusik.push(...newList);
+
+  res.json({ message: "Kelas dihapus" });
 };

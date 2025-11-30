@@ -1,28 +1,25 @@
-const express = require("express");
+import express from "express";
+import kelasRoutes from "./routes/kelasRoutes.js";
+
 const app = express();
-const kelasRoutes = require("./routes/kelasRoutes");
+const PORT = 3000;
 
 app.use(express.json());
 
 // ROUTES
 app.use("/api/classes", kelasRoutes);
 
-// ROOT ENDPOINT (opsional)
+// ROOT
 app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "API Kelas Musik berjalan dengan baik!",
+  res.json({
+    message: "API Kelas Musik berjalan!",
     endpoints: {
-      getAll: "/api/classes",
-      getById: "/api/classes/:id",
-      create: "/api/classes",
-      update: "/api/classes/:id",
-      delete: "/api/classes/:id"
+      list: "/api/classes/musik",
+      detail: "/api/classes/musik/:id"
     }
   });
 });
 
-// SERVER RUNNING
-const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

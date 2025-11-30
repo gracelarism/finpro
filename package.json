@@ -2,7 +2,7 @@
   "name": "finpro",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "dependencies": {
     "accepts": "^2.0.0",
@@ -76,7 +76,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

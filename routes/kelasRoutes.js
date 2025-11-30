@@ -1,12 +1,18 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+import {
+  getKelas,
+  getKelasById,
+  createKelas,
+  updateKelas,
+  deleteKelas
+} from "../controllers/kelasController.js";
 
-const controller = require("../controllers/kelasController");
+const router = Router();
 
-router.get("/", controller.getKelas);
-router.get("/:id", controller.getKelasById);
-router.post("/", controller.createKelas);
-router.put("/:id", controller.updateKelas);
-router.delete("/:id", controller.deleteKelas);
+router.get("/musik", getKelas);
+router.get("/musik/:id", getKelasById);
+router.post("/musik", createKelas);
+router.put("/musik/:id", updateKelas);
+router.delete("/musik/:id", deleteKelas);
 
-module.exports = router;
+export default router;
